@@ -1,0 +1,13 @@
+name: wfip3-data-log-dev
+channels:
+  - conda-forge
+dependencies:
+  - pyserial
+  - imageio
+  - pandas
+  - matplotlib
+  - jupyterlab
+  - numpy
+  - dask
+  - distributed
+  - xarray
