@@ -35,7 +35,7 @@ if __name__ == '__main__':
                         print(ndata)
                     except:
                         print('Unable to write to file')                     
-                time.sleep(0.20)
+                time.sleep(1.00)
             except:
                 print("Keyboard Interrupt")
                 break
