@@ -8,16 +8,8 @@ from datetime import datetime
 # To display current ports:
 # python -m serial.tools.list_ports
 
-def search_ports(args):
-    """
-    Serial to USB devices can mount randomly to ports during reboot of a system.
-
-    This function searches all available ports and determines the specific port
-    for the WXT-536
-    """
-    # define all available ports
+## needs a search ports functionality
     
-
 def pollsave(args):
     # check if you need to poll the data
     if args.poll is True:
@@ -119,3 +111,4 @@ if __name__ == '__main__':
      args = parser.parse_args()
 
      main(args)
+
