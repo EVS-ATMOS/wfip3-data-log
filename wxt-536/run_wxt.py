@@ -10,13 +10,16 @@ from datetime import datetime
 
 ## needs a search ports functionality
     
-def pollsave(args):
+def pollsave(ser, args):
     # check if you need to poll the data
     if args.poll is True:
         # Initalize communication with the instrument
         ser.write(bytearray(args.query + '\r\n', 'utf-8'))
     # Read the incoming serial data
     data = ser.readline()
+    # if verbose is set, print output
+    if args.verbose:
+        print(data)
     # check to make sure data are being returned
     if data:
         # define a timestamp for the data and append to data string
@@ -41,7 +44,7 @@ def main(args):
         while True:
             try:
                 # query the instrument
-                ndata = pollsave(args)
+                ndata = pollsave(ser, args)
                 # check to see if anything is returned
                 ### Add debug line here? -> check how to store values
                 if ndata:
@@ -63,22 +66,22 @@ if __name__ == '__main__':
      parser = argparse.ArgumentParser(
             description="Script for interfacing with Viasala WXT 2D anemometer data")
  
-     parser.add_argument("--debug",
+     parser.add_argument("--verbose",
                          action="store_true",
-                         dest='debug',
-                         help="enable debug logs"
+                         dest='verbose',
+                         help="Enable Output of Serial Communication to Screen"
                          )
      parser.add_argument("--device",
                          type=str,
                          dest='device',
                          default="/dev/ttyUSB0",
-                         help="serial device to use"
+                         help="Specific Serial Port for Device Communication"
                          )
      parser.add_argument("--baudrate",
                          type=int,
                          dest='baud_rate',
                          default=19200,
-                         help="baudrate to use"
+                         help="Baud Rate for Serial Device Communication"
                          )
      parser.add_argument("--poll",
                          type=bool,
@@ -90,7 +93,7 @@ if __name__ == '__main__':
                          default="0R",
                          help="ASCII query command to send to the instrument"
                         )
-     parser.add_argument("--output",
+     parser.add_argument("--format",
                          type=str,
                          dest='output',
                          default="csv",
