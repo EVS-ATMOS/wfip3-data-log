@@ -26,7 +26,7 @@ def pollsave(ser, args):
         time = datetime.now().strftime("%Y%m%dT%H:%M:%S.%f")
         datatime = time + ','+ data.decode('utf-8')
     else:
-        datetime = None
+        datatime = None
 
     return datatime
 
@@ -42,25 +42,22 @@ def main(args):
             filename = nfile + '.csv'
         # While Serial connection is valid
         while True:
-            try:
-                # query the instrument
-                ndata = pollsave(ser, args)
-                # check to see if anything is returned
-                ### Add debug line here? -> check how to store values
-                if ndata:
-                    if args.output == 'nc' or args.output == 'netcdf':
-                        print("netcdf stuff")
-                    else:
-                        # Append to the file. 
-                        with open(filename, "a") as myfile:
-                            try:
-                                writer = csv.writer(myfile, delimiter=",")
-                                writer.writerow(ndata)
-                            except:
-                                print('Unable to write to file')                     
-                time.sleep(args.freq)
-            except:
-                print("Keyboard Interrupt")
+            # query the instrument
+            ndata = pollsave(ser, args)
+            # check to see if anything is returned
+            ### Add debug line here? -> check how to store values
+            if ndata:
+                if args.output == 'nc' or args.output == 'netcdf':
+                    print("Needs support... switch to csv")
+                else:
+                    # Append to the file. 
+                    with open(filename, "a") as myfile:
+                        try:
+                            writer = csv.writer(myfile, delimiter=",")
+                            writer.writerow(ndata.strip().split(','))
+                        except:
+                            print('Unable to write to file: ', filename)
+            time.sleep(args.freq)
  
 if __name__ == '__main__':
      parser = argparse.ArgumentParser(
